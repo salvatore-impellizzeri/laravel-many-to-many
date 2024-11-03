@@ -8,6 +8,9 @@ use Illuminate\Database\Seeder;
 // Model
 use App\Models\Technology;
 
+// Helpers
+use Illuminate\Support\Facades\Schema;
+
 class TechnologySeeder extends Seeder
 {
     /**
@@ -15,6 +18,10 @@ class TechnologySeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::withoutForeignKeyConstraints(function () {
+            Technology::truncate();
+        });
+
         for($i=0; $i<10; $i++){
             $type = Technology::create([
                 'name'=> fake()->word()
