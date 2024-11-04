@@ -19,6 +19,17 @@
             @endif
         </p>
         <p class="card-text">
+            @if ($project->technologies()->count() > 0)
+                @foreach ($project->technologies as $technology)
+                    <a href="{{ route('admin.technologies.show', ['technology' => $technology->id]) }}" class="badge rounded-pill text-bg-primary">
+                        {{ $technology->name }}
+                    </a>
+                @endforeach
+        @else
+            -
+        @endif
+        </p>
+        <p class="card-text">
             <small class="text-body-secondary">
                 @if($project->visible == true)
                     Pubblicato

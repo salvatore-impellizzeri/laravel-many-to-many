@@ -15,7 +15,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::get();
+        $projects = Project::with('technologies')->get(); // Eager loading delle tecnologie
         return view("admin.projects.index", compact("projects"));
     }
 
@@ -26,7 +26,7 @@ class ProjectController extends Controller
     {
         $technologies = Technology::all();
         $types = Type::all();
-        return view("admin.projects.create", compact('types','technologies'));
+        return view("admin.projects.create", compact('types', 'technologies'));
     }
 
     /**
@@ -51,7 +51,13 @@ class ProjectController extends Controller
         $project->visible = $request->input('visible') == '1';
         $project->save();
 
-        return view ('admin.projects.show', compact("project"));
+        if (isset($data['technologies'])) {
+            foreach ($data['technologies'] as $TechnologyId) {
+                $project->technologies()->attach($TechnologyId); 
+            }
+        }
+
+        return redirect()->route('admin.projects.show', ['project' => $project->id]); 
     }
 
     /**
@@ -68,7 +74,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project','types'));
+        $technologies = Technology::all(); 
+        return view('admin.projects.edit', compact('project', 'types', 'technologies')); 
     }
 
     /**
@@ -91,10 +98,16 @@ class ProjectController extends Controller
         $project->src = $data["src"];
         $project->visible = $request->input('visible') == '1';
 
-        $project->update();
+        $project->save(); // Usa save() invece di update()
 
+        // Aggiorna le tecnologie
+        if (isset($data['technologies'])) {
+            $project->technologies()->sync($data['technologies']); // Sincronizza le tecnologie
+        } else {
+            $project->technologies()->sync([]); // Rimuovi le tecnologie se non ne sono state selezionate
+        }
 
-        return redirect()->route('admin.projects.show', compact('project'));
+        return redirect()->route('admin.projects.show', ['project' => $project->id]);
     }
 
     /**

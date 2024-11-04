@@ -26,6 +26,15 @@
                 @endif
             </p>
             <p class="card-text">
+                @forelse($project->technologies as $technology)
+                    <a href="{{ route('admin.technologies.show', ['technology' => $technology->id]) }}" class="badge rounded-pill text-bg-primary">
+                        {{ $technology->name }}
+                    </a>
+                @empty
+                    -
+                @endforelse
+            </p>
+            <p class="card-text">
                 <small class="text-body-secondary">
                     @if($project->visible == true)
                         Pubblicato

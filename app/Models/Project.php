@@ -17,11 +17,11 @@ class Project extends Model
         "type_id",
     ];
 
-    public function type() {
+    public function types() {
         return $this->belongsTo(Type::class);
     }
 
-    public function technology() {
+    public function technologies() {
         return $this->belongsToMany(Technology::class);
     }
 }
