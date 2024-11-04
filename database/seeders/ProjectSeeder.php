@@ -45,7 +45,7 @@ class ProjectSeeder extends Seeder
             for ($j=0; $j < rand(0, Technology::count()); $j++) { 
                 $randomTechnology = Technology::inRandomOrder()->first();
 
-                if(in_array($randomTechnology->id, $technologyIds)){
+                if(!in_array($randomTechnology->id, $technologyIds)){
                     $technologyIds[] = $randomTechnology->id;
                 }
             }

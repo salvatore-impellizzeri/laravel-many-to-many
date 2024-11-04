@@ -23,7 +23,7 @@ class TechnologySeeder extends Seeder
         });
 
         for($i=0; $i<10; $i++){
-            $type = Technology::create([
+            $allTech = Technology::create([
                 'name'=> fake()->word()
             ]);
         }

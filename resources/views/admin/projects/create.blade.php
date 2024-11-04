@@ -44,6 +44,23 @@
                     selected
                 @endif value="{{ $type->id }}">{{ $type->name }}</option>
             @endforeach
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-label" for="technology">Tecnologie:</div>
+        @foreach ($technologies as $technology)
+            <div class="me-4 d-inline-block">
+                <input
+                @if(in_array($technology->id, old('technologies', [])))
+                    checked
+                @endif
+                type="checkbox" class="form-check-input" id="technology-{{ $technology->id }}" name="technologies[]" value="{{ $technology->id }}">
+                <label for="technology-{{ $technology->id }}">
+                    {{ $technology->name }}
+                </label>
+            </div>
+        @endforeach
     </div>
     
     <div class="mb-3 form-check">
